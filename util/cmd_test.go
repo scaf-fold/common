@@ -13,12 +13,3 @@ func TestGetGoPath(t *testing.T) {
 		t.Log(p + "wxf")
 	}
 }
-
-func TestName(t *testing.T) {
-	p, err := util.GoImportFilePath()
-	if err != nil {
-		t.Fatal(err)
-	} else {
-		t.Log(p)
-	}
-}
