@@ -8,6 +8,8 @@ type HttpErrorStatus interface {
 	ErrMsg() ErrorMsg
 	// StatusCode will be generated
 	StatusCode() int
+	// will be generated
+	error
 }
 
 type ErrorMsg struct {
