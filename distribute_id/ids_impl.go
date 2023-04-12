@@ -10,7 +10,7 @@ import (
 )
 
 type DistributeIdImpl struct {
-	mutex         *sync.Mutex
+	mutex         sync.Mutex
 	workId        int64              // workId
 	lastTimestamp *time.Time         // 最后一次时间
 	sequence      int64              // 当前序列号
@@ -23,7 +23,6 @@ func NewDistributeIdImpl(start *time.Time, conf *lzk.Configuration) *DistributeI
 		panic("start time must be before")
 	}
 	return &DistributeIdImpl{
-		mutex:         &sync.Mutex{},
 		lastTimestamp: start,
 		workId:        0,
 		sequence:      0,
