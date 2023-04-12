@@ -99,3 +99,17 @@ func (d *DistributeIdImpl) Ids(count int64) ([]string, error) {
 	<-done
 	return result, nil
 }
+
+func (d *DistributeIdImpl) IdInverse(id string, baseTime time.Time) (*SnowFakeId, error) {
+	inverseId, err := strconv.ParseInt(id, 10, 64)
+	if err != nil {
+		return nil, err
+	}
+	snowId := &SnowFakeId{}
+	// 右移22位位时间戳
+	stamp := inverseId>>(WorkIdBit+SequenceBit) + baseTime.UnixMilli()
+	snowId.GenerateTime = time.UnixMilli(stamp)
+	snowId.WorkId = inverseId>>SequenceBit ^ (inverseId >> (WorkIdBit + SequenceBit) << WorkIdBit)
+	snowId.Sequence = inverseId ^ (inverseId >> SequenceBit << SequenceBit)
+	return snowId, nil
+}
