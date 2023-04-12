@@ -1,7 +1,7 @@
 package util_test
 
 import (
-	"github.com/g-knife/common/util"
+	"github.com/scaf-fold/common/util"
 	"testing"
 )
 
