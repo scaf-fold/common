@@ -111,5 +111,6 @@ func (d *DistributeIdImpl) IdInverse(id string, baseTime time.Time) (*SnowFakeId
 	snowId.GenerateTime = time.UnixMilli(stamp)
 	snowId.WorkId = inverseId>>SequenceBit ^ (inverseId >> (WorkIdBit + SequenceBit) << WorkIdBit)
 	snowId.Sequence = inverseId ^ (inverseId >> SequenceBit << SequenceBit)
+	snowId.Id = id
 	return snowId, nil
 }

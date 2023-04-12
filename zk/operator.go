@@ -87,7 +87,7 @@ func (cr *Curator) MountSequenceId() {
 func (cr *Curator) Set(key string, data []byte) (*zk.Stat, error) {
 	flag, stat, err := cr.client.Exists(key)
 	if err == nil && flag {
-		return cr.client.Set(key, data, stat.Version)
+		return cr.client.Set(key, data, stat.Version+1)
 	}
 	return stat, err
 }
