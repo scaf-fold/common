@@ -2,7 +2,7 @@ package distribute_id
 
 import (
 	"fmt"
-	lzk "github.com/g-knife/common/zk"
+	lzk "github.com/scaf-fold/common/zk"
 	"log"
 	"strconv"
 	"sync"
