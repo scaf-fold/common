@@ -16,7 +16,7 @@ import (
 func (cr *Curator) CreateParentsIfNeededWithCustomPolicy(path string, data []byte, flags int32, acl []zk.ACL) (string, error) {
 	var nodePath string
 	if path == "" {
-		return filepath.Separator, nil
+		return string(filepath.Separator), nil
 	}
 	paths := strings.Split(path, string(filepath.Separator))
 	size := len(paths)
