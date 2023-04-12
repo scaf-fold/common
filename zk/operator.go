@@ -25,7 +25,7 @@ func (cr *Curator) CreateParentsIfNeededWithCustomPolicy(path string, data []byt
 		if sub == "" {
 			continue
 		}
-		nodePath += fmt.Sprintf("%c/%s", filepath.Separator, sub)
+		nodePath += fmt.Sprintf("%c%s", filepath.Separator, sub)
 		flag, _, _ := cr.client.Exists(nodePath)
 		if flag {
 			continue
