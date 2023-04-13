@@ -85,9 +85,7 @@ func (cr *Curator) MountSequenceId() {
 }
 
 func (cr *Curator) Set(key string, data []byte) (*zk.Stat, error) {
-	flag, stat, event, err := cr.client.ExistsW(key)
-	c := <-event
-	fmt.Println(c, stat.Version)
+	flag, stat, err := cr.client.Exists(key)
 	if err == nil && flag {
 		return cr.client.Set(key, data, stat.Version+1)
 	}
@@ -118,18 +116,20 @@ func (cr *Curator) ScheduleNode(node string) {
 	for {
 		select {
 		case <-ticker.C:
-			t := time.Now()
-			cr.lastUpdated = &t
-			data, err := cr.DefaultNode()
-			if err != nil {
-				fmt.Println(err)
-				break
-			}
-			_, err = cr.Set(node, data)
-			if err != nil {
-				fmt.Println(err)
-				break
-			}
+			go func(node string) {
+				t := time.Now()
+				cr.lastUpdated = &t
+				data, err := cr.DefaultNode()
+				if err != nil {
+					fmt.Println(err)
+					return
+				}
+				_, err = cr.Set(node, data)
+				if err != nil {
+					fmt.Println(err)
+					return
+				}
+			}(node)
 		}
 	}
 }
