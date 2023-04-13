@@ -61,7 +61,7 @@ func (cr *Curator) Add(nodePath string, buildData func() ([]byte, error)) (strin
 		data, err = buildData()
 	}
 	if err != nil {
-		return "", err
+		panic(err)
 	}
 	return cr.CreateParentsIfNeededWithCustomPolicy(nodeKey, data, zk.FlagSequence, zk.WorldACL(zk.PermAll))
 }
@@ -82,12 +82,13 @@ func (cr *Curator) MountSequenceId() {
 	if err != nil {
 		panic(err)
 	}
+	log.Println("mounted finished")
 }
 
 func (cr *Curator) Set(key string, data []byte) (*zk.Stat, error) {
 	flag, stat, err := cr.client.Exists(key)
 	if err == nil && flag {
-		return cr.client.Set(key, data, stat.Version+1)
+		return cr.client.Set(key, data, stat.Version)
 	}
 	return stat, err
 }
@@ -111,6 +112,7 @@ func (cr *Curator) Check(nodeKey string) {
 }
 
 func (cr *Curator) ScheduleNode(node string) {
+	log.Println("schedule node", node)
 	ticker := time.NewTicker(time.Second * 3)
 	defer ticker.Stop()
 	for {
@@ -220,5 +222,5 @@ func (cr *Curator) Restart(root string, done chan struct{}) {
 		cr.workId = i
 		cr.MountSequenceId()
 	}
-
+	log.Println("restart completed successfully")
 }

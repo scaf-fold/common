@@ -38,6 +38,7 @@ func (d *DistributeIdImpl) Start() {
 		panic(err)
 	}
 	nodeRoot := fmt.Sprintf("/%s/conf", d.zkConf.RootNode)
+	log.Println("root node: ", nodeRoot)
 	isExists := cr.Exists(nodeRoot)
 	if !isExists {
 		cr.Start(nodeRoot, done)
